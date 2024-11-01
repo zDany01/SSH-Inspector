@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
 using System.Net;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LoginChecker
+namespace sshinsp
 {
     internal class Scammer
     {
@@ -26,7 +19,7 @@ namespace LoginChecker
 
         public void RegisterUsername(string username)
         {
-            if(!UserNames.Contains(username)) UserNames.Add(username);
+            if (!UserNames.Contains(username)) UserNames.Add(username);
             loginAttempt++;
         }
 
@@ -44,13 +37,14 @@ namespace LoginChecker
         {
             int tries = 3;
             do
-            try
-            {
-                return json[valueName].Value<string>();
-            } catch
-            {
+                try
+                {
+                    return json[valueName].Value<string>();
+                }
+                catch
+                {
                     System.Threading.Thread.Sleep(1500);
-            } while (tries-- > 0);
+                } while (tries-- > 0);
             return "Error";
 
         }
@@ -74,7 +68,7 @@ namespace LoginChecker
             WriteTableLine("UserNames:", fullSize);
 
             string userNameLine = string.Empty;
-            foreach(string userName in UserNames)
+            foreach (string userName in UserNames)
             {
                 string newString = userNameLine + userName + ", ";
                 if (newString.Length >= fullSize - 2)

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 
-namespace LoginChecker
+namespace sshinsp
 {
     internal class Program
     {
@@ -20,7 +18,7 @@ namespace LoginChecker
                 foreach (var country in CountryCount) if (country.Item2 > biggestCountry.Item2) biggestCountry = country;
                 OrderedList.Add(biggestCountry);
                 CountryCount.Remove(biggestCountry);
-            } while(CountryCount.Count > 0);
+            } while (CountryCount.Count > 0);
             CountryCount = OrderedList;
         }
 
@@ -45,19 +43,32 @@ namespace LoginChecker
             string[] fileContent;
             try
             {
-                fileContent = File.ReadAllLines(args[0]);
+                fileContent = File.ReadAllLines(args[0]).Where(x => x.ToLower().Contains("failed") || x.ToLower().Contains("authenticating")).ToArray<string>();
+                if(fileContent.Length == 0)
+                {
+                    Console.WriteLine("Nothing to analyze");
+                    Environment.Exit(0);
+                }
             }
             catch
             {
-                Console.WriteLine("Usage:\nLoginChecker <pathToLogFile>");
+                Console.WriteLine("Usage:\n\tsshinsp <pathToLogFile>");
                 return;
             }
 
-            Console.WriteLine("Checking...");
+            Console.WriteLine("Checking..");
             List<Scammer> scammers = new List<Scammer>();
             foreach (string line in fileContent)
             {
-                string ip = FilterData(line, out string user);
+                string ip, user;
+                try
+                {
+                    ip = FilterData(line, out user);
+                }
+                catch
+                {
+                    continue;
+                }
                 bool found = false;
 
                 foreach (Scammer scammer in scammers)
@@ -78,27 +89,36 @@ namespace LoginChecker
                 }
             }
 
-            Console.WriteLine("Check done, press enter to show result...");
-            Console.ReadLine();
             foreach (Scammer pieceOfShit in scammers) pieceOfShit.TableOfShame();
 
-            Console.WriteLine("Done.");
-            Console.WriteLine("I'm most wanted from:");
+            Console.WriteLine("\nI'm most wanted from");
             SortList();
-            foreach ((string, int) country in CountryCount) Console.WriteLine($"{country.Item1} - {country.Item2}");
+            foreach ((string, int) country in CountryCount) Console.WriteLine($" * {country.Item1} - {country.Item2}");
 
-            Console.WriteLine("Press a key to exit");
+            Console.WriteLine("Press a key to exit..");
             Console.ReadKey();
         }
 
         private static string FilterData(string line, out string userName)
         {
-            int userStart = line.IndexOf("for") + 4; //for + space
-            int userEnd = line.IndexOf("from") - 1;
-            int ipStart = userEnd + 6; //from + space + -1
-            int ipEnd = IndexOfWholeWord(line, "port") - 1;
-            userName = line.Substring(userStart, userEnd - userStart);
-            return line.Substring(ipStart, ipEnd - ipStart);
+            if (line.ToLower().Contains("failed"))
+            {
+                int userStart = line.IndexOf("for") + 4; //for + space
+                int userEnd = line.IndexOf("from") - 1;
+                int ipStart = userEnd + 6; //from + space + -1
+                int ipEnd = IndexOfWholeWord(line, "port") - 1;
+                userName = line.Substring(userStart, userEnd - userStart);
+                return line.Substring(ipStart, ipEnd - ipStart);
+            }
+            else
+            {
+                int start = line.IndexOf("user") + 5;
+                int end = line.LastIndexOf("port") - 1;
+                string[] filteredLine = line.Substring(start, end - start).Split();
+                userName = filteredLine[0];
+                return filteredLine[1];
+            }
+
         }
 
         static int IndexOfWholeWord(string str, string word)

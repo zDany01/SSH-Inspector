@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // set di attributi. Modificare i valori di questi attributi per modificare le informazioni
 // associate a un assembly.
-[assembly: AssemblyTitle("LoginChecker")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SSH Inspector")]
+[assembly: AssemblyDescription("A simple application to check ssh incoming connections")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LoginChecker")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
+[assembly: AssemblyProduct("SSH Inspector")]
+[assembly: AssemblyCopyright("Copyright © zDany01 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

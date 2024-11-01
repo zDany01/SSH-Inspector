@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginChecker", "LoginChecker\LoginChecker.csproj", "{4778F8D5-31D4-416A-8319-E586168EA923}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSH Inspector", "SSH Inspector\SSH Inspector.csproj", "{4778F8D5-31D4-416A-8319-E586168EA923}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
